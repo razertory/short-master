@@ -1,0 +1,160 @@
+@()
+@main("short-master") {
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html,
+      body {
+        padding: 0;
+        font-size: 16px;
+      }
+      input,
+      button {
+        border: none;
+        outline: none;
+        -webkit-appearance: none;
+        border-radius: 0;
+      }
+      input::after,
+      button::after {
+        outline: none;
+      }
+      button:hover {
+        cursor: pointer;
+        opacity: 0.9;
+      }
+      button:active {
+        cursor: pointer;
+        opacity: 0.7;
+      }
+      #app {
+        width: 1200px;
+        margin: 0 auto;
+      }
+      .m-input {
+        width: 100%;
+        height: 60px;
+        line-height: 60px;
+        display: flex;
+        margin: 40px 0;
+      }
+      .m-input > input {
+        display: inline-block;
+        vertical-align: top;
+        width: calc(100% - 100px);
+        height: 60px;
+        box-sizing: border-box;
+        padding: 20px;
+        font-size: 18px;
+        border-top: 1px solid #6dae38;
+        border-left: 1px solid #6dae38;
+        border-bottom: 1px solid #6dae38;
+        color: #0f4c75;
+      }
+      .m-input > button {
+        display: inline-block;
+        vertical-align: top;
+        width: 100px;
+        height: 100%;
+        font-size: 18px;
+        background: #80c846;
+        color: #fff;
+      }
+      .m-content {
+        display: none;
+        padding: 20px;
+        min-height: 200px;
+        background: #e1f2fb;
+      }
+      .m-content-item {
+        color: #666;
+        line-height: 1.7;
+        margin-bottom: 16px;
+      }
+      .m-content-item > .title {
+        display: inline-block;
+        vertical-align: middle;
+        width: 80px;
+      }
+      .m-content-item > .value {
+        display: inline-block;
+        vertical-align: middle;
+        color: #13829b;
+        margin-right: 12px;
+        word-break: break-all;
+      }
+      .copy-btn {
+        display: inline-block;
+        vertical-align: middle;
+        width: 80px;
+        height: 30px;
+        font-size: 18px;
+        background: #80c846;
+        color: #fff;
+        border-radius: 4px;
+      }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="m-input">
+        <input type="text" id="input" />
+        <button onclick="submit()">generate</button>
+    </div>
+    <div class="m-content" id="content">
+        <div class="m-content-item">
+            <span class="title">short：</span>
+            <span class="value" id="shortUrl"></span>
+            <button class="copy-btn" data-clipboard-target="#shortUrl">
+            copy
+            </button>
+        </div>
+        <div class="m-content-item">
+            <span class="title">origin：</span>
+            <span class="value" id="url"></span>
+        </div>
+    </div>
+</div>
+<script src="./assets/javascripts/clipboard.js"></script>
+<script src="./assets/javascripts/jq.js"></script>
+<script>
+      function setData(shortUrl, url) {
+        $('#shortUrl').text(shortUrl);
+        $('#url').text(url);
+        $('#content').css({
+          display: 'block',
+        });
+      }
+
+      function submit() {
+        var value = $('#input').val();
+        if (!value) return;
+        $.ajax({
+          url: '/short',
+          method: 'POST',
+          data: value,
+          contentType: "text/plain",
+          success: function (res) {
+            // 显示结果
+            setData(res, value);
+          },
+          fail: function (err) {},
+        });
+      }
+
+      window.onload = function () {
+        var clipboard = new ClipboardJS('.copy-btn');
+        clipboard.on('success', function (e) {
+          alert('copied to clipboard');
+        });
+        clipboard.on('error', function (e) {
+          alert('copy failed');
+        });
+      };
+    </script>
+</body>
+</html>
+}
