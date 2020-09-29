@@ -135,8 +135,8 @@
         $.ajax({
           url: '/short',
           method: 'POST',
-          data: value,
-          contentType: "text/plain",
+          data: {"url": value},
+          contentType: "application/x-www-form-urlencoded",
           success: function (res) {
             // 显示结果
             setData(res, value);
