@@ -22,6 +22,7 @@ class HomeController @Inject()(cc: ControllerComponents, shortenerService: Short
     Ok(views.html.index())
   }
 
+  // TODO redirect to origin url, using 301 or 302
   def jump() = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index())
   }
