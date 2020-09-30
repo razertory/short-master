@@ -12,6 +12,10 @@ class ShortenerService @Inject()() {
 
   def now = DateTime.now
 
+  def getUrl(short: String): String = {
+    jedis.get(shortKey(short))
+  }
+
   // 查询或生成
   def getOrGenerate(url: String): String = {
     val short = jedis.get(urlKey(url))

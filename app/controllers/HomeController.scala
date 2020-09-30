@@ -4,6 +4,8 @@ import javax.inject._
 import play.api.mvc._
 import service.ShortenerService
 
+import scala.util.Properties
+
 /**
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
@@ -23,8 +25,13 @@ class HomeController @Inject()(cc: ControllerComponents, shortenerService: Short
   }
 
   // TODO redirect to origin url, using 301 or 302
-  def jump() = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index())
+  def redirect(short: String) = Action { implicit request: Request[AnyContent] =>
+    val url = shortenerService.getUrl(short)
+    if (url == null) {
+      Ok(views.html.index())
+    } else {
+      Redirect(url, 301)
+    }
   }
 
   def short() = Action { request =>
@@ -38,6 +45,7 @@ class HomeController @Inject()(cc: ControllerComponents, shortenerService: Short
   }
 
   private def getShort(url: String): String = {
-    shortenerService.getOrGenerate(url)
+    val baseUrl = Properties.envOrElse("BASE_URL", "http://127.0.0.1:9000/r")
+    baseUrl + "/" + shortenerService.getOrGenerate(url)
   }
 }
