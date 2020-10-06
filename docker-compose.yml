@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  redis:
+    image: redis
+    command: ["redis-server", "--bind", "0.0.0.0", "--port", "6379"]
+    ports:
+      - "6379:6379"
+  web:
+    image: "45.32.52.249:5000/short-master:latest"
+    links:
+      - redis
+    ports:
+      - "9000:9000"

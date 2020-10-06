@@ -8,7 +8,7 @@ import util.Base62
 @Singleton
 class ShortenerService @Inject()() {
 
-  val jedis = new Jedis("127.0.0.1", 6379)
+  val jedis = new Jedis("redis", 6379)
 
   def now = DateTime.now
 
