@@ -7,7 +7,7 @@ services:
     ports:
       - "6379:6379"
   web:
-    image: "45.32.52.249:5000/short-master:latest"
+    image: "short-master:latest"
     links:
       - redis
     ports:
