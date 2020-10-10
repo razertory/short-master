@@ -9,6 +9,7 @@ ENV INSTALL_DIR /usr/local
 ENV SBT_HOME /usr/local/sbt
 ENV PATH ${PATH}:${SBT_HOME}/bin
 ENV BASE_URL http://short-master.com/r
+ENV JAVA_OPTS="-Xmx512m"
 
 RUN apk add --no-cache --update bash wget && mkdir -p "$SBT_HOME" && \
     wget -qO - --no-check-certificate "https://dl.bintray.com/sbt/native-packages/sbt/$SBT_VERSION/sbt-$SBT_VERSION.tgz" |  tar xz -C $INSTALL_DIR && \
