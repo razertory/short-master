@@ -5,10 +5,12 @@ import org.joda.time.DateTime
 import redis.clients.jedis.Jedis
 import util.Base62
 
+import scala.util.Properties
+
 @Singleton
 class ShortenerService @Inject()() {
 
-  val jedis = new Jedis("redis", 6379)
+  val jedis = new Jedis(Properties.envOrElse("REDIS_HOST", "127.0.0.1"), 6379)
 
   def now = DateTime.now
 
